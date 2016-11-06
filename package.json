@@ -17,6 +17,9 @@
     "mocha": "^3.1.2",
     "power-assert": "^1.4.1"
   },
+  "files": [
+    "lib"
+  ],
   "homepage": "https://github.com/yuya-takeyama/flagship.js#readme",
   "keywords": [
     "feature",
