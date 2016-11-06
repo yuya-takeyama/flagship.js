@@ -49,6 +49,29 @@ describe('Flagset', () => {
         });
       });
     });
+
+    describe('override by env', () => {
+      beforeEach(() => {
+        process.env['FLAGSHIP_TRUE_FLAG'] = '0';
+        process.env['FLAGSHIP_FALSE_FLAG'] = '1';
+        process.env['FLAGSHIP_FN_TRUE_FLAG'] = 'false';
+        process.env['FLAGSHIP_FN_FALSE_FLAG'] = 'true';
+      });
+
+      afterEach(() => {
+        delete process.env['FLAGSHIP_TRUE_FLAG'];
+        delete process.env['FLAGSHIP_FALSE_FLAG'];
+        delete process.env['FLAGSHIP_FN_TRUE_FLAG'];
+        delete process.env['FLAGSHIP_FN_FALSE_FLAG'];
+      });
+
+      it('changes flags', function() {
+        assert(this.flagset.enabled('true_flag') === false);
+        assert(this.flagset.enabled('false_flag'));
+        assert(this.flagset.enabled('fn_true_flag') === false);
+        assert(this.flagset.enabled('fn_false_flag'));
+      });
+    });
   });
 
   describe('extending', () => {
