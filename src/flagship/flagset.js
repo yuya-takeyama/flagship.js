@@ -11,6 +11,21 @@ export default class Flagset {
       throw new Error(`The flag "${key}" is not defined`);
     }
 
+    if (typeof process === 'object' && typeof process.env === 'object') {
+      const env = process.env[`FLAGSHIP_${key.toUpperCase()}`];
+
+      switch (env) {
+        case '1':
+        case 'true':
+          return true;
+
+        case '0':
+        case 'false':
+        case '':
+          return false;
+      }
+    }
+
     const flag = this.flags[key];
 
     if (typeof flag === 'function') {
