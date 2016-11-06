@@ -3,8 +3,9 @@
 import Flagset from './flagset';
 
 export default class Dsl {
-  constructor(key, definition, base) {
+  constructor(key, context, definition, base) {
     this.key = key;
+    this.context = context;
     this.flags = {};
     this.definition = definition;
     this.base = base;
@@ -24,6 +25,6 @@ export default class Dsl {
 
   getFlagset() {
     this.definition(this);
-    return new Flagset(this.key, this.flags, this.base);
+    return new Flagset(this.key, this.flags, this.context, this.base);
   }
 }

@@ -84,4 +84,38 @@ describe('Flagship', () => {
       });
     });
   });
+
+  describe('#setContext', () => {
+    beforeEach(function() {
+      this.flagship = new Flagship;
+    });
+
+    it('sets context variable which is accessible from function of #enable', function() {
+      this.flagship.setContext('var', 'VAR');
+
+      this.flagship.define('foo', (feature) => {
+        feature.enable('bar', (context) => context.get('var') === 'VAR');
+        feature.enable('baz', (context) => context.get('var') !== 'VAR');
+      });
+
+      this.flagship.selectFlagset('foo');
+
+      assert(this.flagship.enabled('bar'));
+      assert(this.flagship.enabled('baz') === false);
+    });
+
+    it('sets context function which is callable from function of #enable', function() {
+      this.flagship.setContext('var', () => 'VAR');
+
+      this.flagship.define('foo', (feature) => {
+        feature.enable('bar', (context) => context.get('var') === 'VAR');
+        feature.enable('baz', (context) => context.get('var') !== 'VAR');
+      });
+
+      this.flagship.selectFlagset('foo');
+
+      assert(this.flagship.enabled('bar'));
+      assert(this.flagship.enabled('baz') === false);
+    });
+  });
 });

@@ -1,6 +1,7 @@
 'use strict';
 
 import assert from 'power-assert';
+import Context from '../../src/flagship/context';
 import Flagset from '../../src/flagship/flagset';
 
 describe('Flagset', () => {
@@ -12,7 +13,7 @@ describe('Flagset', () => {
         fn_true_flag: () => true,
         fn_false_flag: () => false,
       });
-    });
+    }, new Context);
 
     context('when flag is a Boolean value', () => {
       context('and the value is true', () => {
@@ -81,11 +82,11 @@ describe('Flagset', () => {
         false_flag: false,
         fn_true_flag: () => true,
         fn_false_flag: () => false,
-      });
+      }, new Context);
     });
 
     it('extends base flagset', function() {
-      const flagset = new Flagset('extending', {}, this.base);
+      const flagset = new Flagset('extending', {}, new Context, this.base);
 
       assert(flagset.enabled('true_flag'));
       assert(flagset.enabled('false_flag') === false);
@@ -100,7 +101,7 @@ describe('Flagset', () => {
           false_flag: true,
           fn_true_flag: () => false,
           fn_false_flag: () => true,
-        }, this.base);
+        }, new Context, this.base);
 
         assert(flagset.enabled('true_flag') === false);
         assert(flagset.enabled('false_flag'));
@@ -116,7 +117,7 @@ describe('Flagset', () => {
           new_false_flag: false,
           new_fn_true_flag: () => true,
           new_fn_false_flag: () => false,
-        }, this.base);
+        }, new Context, this.base);
 
         assert(flagset.enabled('new_true_flag'));
         assert(flagset.enabled('new_false_flag') === false);

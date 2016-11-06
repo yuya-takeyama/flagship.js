@@ -1,11 +1,13 @@
 'use strict';
 
+import Context from './flagship/context';
 import Dsl from './flagship/dsl';
 
 export default class Flagship {
   constructor() {
     this.flagsets = {};
     this.currentFlagset = null;
+    this.context = new Context;
   }
 
   define(key, options, fn) {
@@ -15,7 +17,7 @@ export default class Flagship {
     }
 
     const base = options.extend ? this.getFlagset(options.extend) : null;
-    this.flagsets[key] = (new Dsl(key, fn, base)).getFlagset();
+    this.flagsets[key] = (new Dsl(key, this.context, fn, base)).getFlagset();
   }
 
   enabled(key) {
@@ -36,5 +38,9 @@ export default class Flagship {
     }
 
     return this.flagsets[key];
+  }
+
+  setContext(key, value) {
+    this.context.__set(key, value);
   }
 }

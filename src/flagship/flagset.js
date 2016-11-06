@@ -1,9 +1,12 @@
 'use strict';
 
+import Context from './context';
+
 export default class Flagset {
-  constructor(key, flags, base) {
+  constructor(key, flags, context, base) {
     this.key = key;
     this.flags = base ? { ...base.flags, ...flags } : flags;
+    this.context = context;
   }
 
   enabled(key) {
@@ -29,7 +32,7 @@ export default class Flagset {
     const flag = this.flags[key];
 
     if (typeof flag === 'function') {
-      return flag();
+      return flag(this.context);
     } else {
       return flag;
     }
