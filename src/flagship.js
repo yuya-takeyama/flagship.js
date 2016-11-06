@@ -8,8 +8,14 @@ export default class Flagship {
     this.currentFlagset = null;
   }
 
-  define(key, fn) {
-    this.flagsets[key] = (new Dsl(key, fn)).getFlagset();
+  define(key, options, fn) {
+    if (!fn) {
+      fn = options;
+      options = {};
+    }
+
+    const base = options.extend ? this.getFlagset(options.extend) : null;
+    this.flagsets[key] = (new Dsl(key, fn, base)).getFlagset();
   }
 
   enabled(key) {
@@ -21,10 +27,14 @@ export default class Flagship {
   }
 
   selectFlagset(key) {
+    this.currentFlagset = this.getFlagset(key);
+  }
+
+  getFlagset(key) {
     if (!this.flagsets[key]) {
       throw new Error(`Flagset "${key}" is not defined`);
     }
 
-    this.currentFlagset = this.flagsets[key];
+    return this.flagsets[key];
   }
 }

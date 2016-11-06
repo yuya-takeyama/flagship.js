@@ -14,6 +14,23 @@ describe('Flagship', () => {
 
       assert(flagship.flagsets['foo'].enabled('bar'));
     });
+
+    context('with "extend" option', () => {
+      const flagship= new Flagship;
+
+      flagship.define('base', (feature) => {
+        feature.enable('foo');
+      });
+
+      flagship.define('extending', { extend: 'base' }, (feature) => {
+        feature.enable('bar');
+      });
+
+      flagship.selectFlagset('extending');
+
+      assert(flagship.enabled('foo'));
+      assert(flagship.enabled('bar'));
+    });
   });
 
   describe('#enabled', () => {
