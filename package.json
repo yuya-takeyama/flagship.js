@@ -28,7 +28,8 @@
   },
   "scripts": {
     "build": "NODE_ENV=production babel src --out-dir lib --source-maps inline",
-    "test": "mocha --compilers js:babel-register test/*.js",
+    "test": "mocha --compilers js:babel-register test/**/*.js",
+    "test:watch": "npm test -- --watch",
     "watch": "babel src --out-dir lib --watch --source-maps inline"
   }
 }
