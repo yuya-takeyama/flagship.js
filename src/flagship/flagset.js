@@ -1,9 +1,9 @@
 'use strict';
 
 export default class Flagset {
-  constructor(key, flags) {
+  constructor(key, flags, base) {
     this.key = key;
-    this.flags = flags;
+    this.flags = base ? { ...base.flags, ...flags } : flags;
   }
 
   enabled(key) {
